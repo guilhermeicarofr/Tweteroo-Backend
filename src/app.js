@@ -20,10 +20,33 @@ const tweets = [
 
 
 
-server.get('/', (req,res) => {
-    res.send('hello');
+
+server.post('/sign-up', (req,res) => {
+    const { username, avatar } = req.body;
+    if(username && avatar) {
+        users.push({
+            username,
+            avatar
+        });
+        res.send('OK');
+    } else {
+        res.status(400).send('Missing information')
+    }
 });
 
 
+
+
+
+
+
+
+
+
+
+
+server.get('/', (req,res) => {
+    res.send('hello');
+});
 
 server.listen(5000,()=>console.log('Server listening on port 5000'));
