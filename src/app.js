@@ -1,24 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 
+
 const server = express();
 server.use(cors());
 server.use(express.json());
 
-const users = [
-    {
-        username: 'bobesponja', 
-        avatar: "https://super.abril.com" 
-    }    
-];
-const tweets = [
-    {
-        username: "bobesponja",
-        tweet: "eu amo o hub"
-    }
-];
+const users = [];
+const tweets = [];
 
 
+function lastTenTweets() {
+    return tweets.filter((item,index) => index >= (tweets.length)-10);
+}
+function getAvatar(tweet) {
+    return {
+        ...tweet,
+        avatar: users.find(user => user.username === tweet.username).avatar
+    };
+}
 
 
 server.post('/sign-up', (req,res) => {
@@ -47,17 +47,10 @@ server.post('/tweets', (req,res) => {
     }
 });
 
-
-
-
-
-
-
-
-
-
-server.get('/', (req,res) => {
-    res.send('hello');
+server.get('/tweets', (req,res) => {
+    const tweetList = lastTenTweets().map((tweet) => getAvatar(tweet));
+    res.send(tweetList);
 });
+
 
 server.listen(5000,()=>console.log('Server listening on port 5000'));
