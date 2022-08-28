@@ -34,7 +34,18 @@ server.post('/sign-up', (req,res) => {
     }
 });
 
-
+server.post('/tweets', (req,res) => {
+    const { username, tweet } = req.body;
+    if(username && tweet) {
+        tweets.push({
+            username,
+            tweet
+        });
+        res.send('OK');
+    } else {
+        res.status(400).send('Missing information')
+    }
+});
 
 
 
