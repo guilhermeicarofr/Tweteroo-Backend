@@ -35,7 +35,8 @@ server.post('/sign-up', (req,res) => {
 });
 
 server.post('/tweets', (req,res) => {
-    const { username, tweet } = req.body;
+    const { tweet } = req.body;
+    const username = req.headers.user;
     if(username && tweet) {
         tweets.push({
             username,
@@ -48,14 +49,14 @@ server.post('/tweets', (req,res) => {
 });
 
 server.get('/tweets', (req,res) => {
-    const tweetList = lastTenTweets().map((tweet) => getAvatar(tweet));
+    const tweetList = lastTenTweets().map(tweet => getAvatar(tweet));
     res.send(tweetList);
 });
 
 server.get('/tweets/:username', (req,res) => {
-    const tweetList = tweets.filter((tweet) => tweet.username === req.params.username);
+    const tweetList = tweets.filter(tweet => tweet.username === req.params.username).map(tweet => getAvatar(tweet));
     res.send(tweetList);
 });
 
 
-server.listen(5000,()=>console.log('Server listening on port 5000'));
+server.listen(5000,()=>console.log('Server listening on port 5000...'));
