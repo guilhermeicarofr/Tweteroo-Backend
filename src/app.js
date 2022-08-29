@@ -52,5 +52,10 @@ server.get('/tweets', (req,res) => {
     res.send(tweetList);
 });
 
+server.get('/tweets/:username', (req,res) => {
+    const tweetList = tweets.filter((tweet) => tweet.username === req.params.username);
+    res.send(tweetList);
+});
+
 
 server.listen(5000,()=>console.log('Server listening on port 5000'));
