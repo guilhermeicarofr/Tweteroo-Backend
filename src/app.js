@@ -30,7 +30,7 @@ server.post('/sign-up', (req,res) => {
         });
         res.send('OK');
     } else {
-        res.status(400).send('Missing information')
+        res.status(400).send('Todos os campos são obrigatórios!');
     }
 });
 
@@ -43,7 +43,7 @@ server.post('/tweets', (req,res) => {
         });
         res.send('OK');
     } else {
-        res.status(400).send('Missing information')
+        res.status(400).send('Todos os campos são obrigatórios!');
     }
 });
 
