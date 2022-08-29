@@ -10,8 +10,11 @@ const users = [];
 const tweets = [];
 
 
-function lastTenTweets() {
-    return tweets.filter((item,index) => index >= (tweets.length)-10);
+function loadTenTweets(page) {
+    return tweets.filter((item,index) => index >= (tweets.length)-(10*page) && index<(tweets.length)-((10*page)-10));
+}
+function loadUserTweets(username) {
+    return tweets.filter(tweet => tweet.username === username);
 }
 function getAvatar(tweet) {
     return {
@@ -49,12 +52,18 @@ server.post('/tweets', (req,res) => {
 });
 
 server.get('/tweets', (req,res) => {
-    const tweetList = lastTenTweets().map(tweet => getAvatar(tweet));
-    res.send(tweetList);
+    const { page } = req.query;
+    if(page >= 1) {
+        const tweetList = loadTenTweets(page).reverse().map(tweet => getAvatar(tweet));
+        res.send(tweetList);
+    } else {
+        res.status(400).send('Informe uma página válida!');
+    }
 });
 
 server.get('/tweets/:username', (req,res) => {
-    const tweetList = tweets.filter(tweet => tweet.username === req.params.username).map(tweet => getAvatar(tweet));
+    const { username } = req.params;
+    const tweetList = loadUserTweets(username).reverse().map(tweet => getAvatar(tweet));
     res.send(tweetList);
 });
 
